@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cari Musik & Lirik</title>
+  <title>Pemutar Musik & Lirik</title>
   <style>
     * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { background-color: #0f172a; color: #f8fafc; max-width: 600px; margin: 30px auto; padding: 20px; }
@@ -12,10 +12,12 @@
     input { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: #fff; font-size: 1rem; }
     button { padding: 12px 20px; background-color: #38bdf8; color: #0f172a; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
     button:hover { background-color: #0284c7; color: white; }
-    .player-container { margin-bottom: 20px; border-radius: 12px; overflow: hidden; background: #1e293b; text-align: center; display: none; }
-    iframe { width: 100%; height: 210px; border: none; }
-    .lyrics-box { background: #1e293b; padding: 20px; border-radius: 12px; line-height: 1.6; white-space: pre-wrap; text-align: center; display: none; }
-    .btn-search-lyrics { display: inline-block; margin-top: 15px; padding: 10px 15px; background: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; }
+    .player-container { margin-bottom: 20px; border-radius: 12px; overflow: hidden; background: #1e293b; text-align: center; display: none; padding: 10px; }
+    iframe { width: 100%; height: 250px; border: none; border-radius: 8px; }
+    .lyrics-box { background: #1e293b; padding: 20px; border-radius: 12px; line-height: 1.6; text-align: center; display: none; margin-top: 15px; }
+    .btn-action { display: inline-block; margin: 8px 5px; padding: 10px 15px; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 0.9rem; }
+    .btn-youtube { background: #ef4444; }
+    .btn-lyrics { background: #10b981; }
   </style>
 </head>
 <body>
@@ -28,13 +30,16 @@
   </div>
 
   <div class="player-container" id="playerContainer">
-    <iframe id="youtubePlayer" allow="autoplay"></iframe>
+    <iframe id="youtubePlayer" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   </div>
 
   <div class="lyrics-box" id="lyricsBox">
-    <h3 id="songTitle"></h3>
-    <p id="lyricsNotice"></p>
-    <a id="googleSearchBtn" class="btn-search-lyrics" target="_blank">Lihat Lirik Lengkap di Google</a>
+    <h3 id="songTitle" style="color: #38bdf8; margin-top:0;"></h3>
+    <p id="lyricsNotice">Putar musik melalui tombol atau pemutar di atas, lalu cek lirik di bawah ini:</p>
+    <div>
+      <a id="ytDirectBtn" class="btn-action btn-youtube" target="_blank">▶ Putar Langsung di YouTube</a>
+      <a id="googleSearchBtn" class="btn-action btn-lyrics" target="_blank">📄 Buka Lirik di Google</a>
+    </div>
   </div>
 
   <script>
@@ -45,23 +50,26 @@
         return;
       }
 
-      // Tampilkan Pemutar Musik (YouTube Embed Search)
+      const encodedQuery = encodeURIComponent(input);
+
+      // Menggunakan YouTube No-Cookie / Embed Kueri yang Kompatibel
       const playerContainer = document.getElementById('playerContainer');
       const player = document.getElementById('youtubePlayer');
-      player.src = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(input)}&autoplay=1`;
+      player.src = `https://www.youtube-nocookie.com/embed?listType=search&list=${encodedQuery}`;
       playerContainer.style.display = 'block';
 
-      // Tampilkan Bagian Informasi Lirik
+      // Update Tampilan Lirik dan Link Direct
       const lyricsBox = document.getElementById('lyricsBox');
       const songTitle = document.getElementById('songTitle');
-      const lyricsNotice = document.getElementById('lyricsNotice');
       const googleSearchBtn = document.getElementById('googleSearchBtn');
+      const ytDirectBtn = document.getElementById('ytDirectBtn');
 
-      songTitle.innerText = `Menampilkan Lirik untuk: "${input}"`;
-      lyricsNotice.innerText = "Untuk alasan hak cipta, lirik lagu lengkap dapat dibuka melalui lisensi resmi Google Search.";
+      songTitle.innerText = `Lagu: "${input}"`;
       
-      // Link ke Pencarian Google Lirik Resmi
+      // Tombol Alternatif jika Embed Diblokir oleh YouTube
+      ytDirectBtn.href = `https://www.youtube.com/results?search_query=${encodedQuery}`;
       googleSearchBtn.href = `https://www.google.com/search?q=${encodeURIComponent(input + " lirik")}`;
+      
       lyricsBox.style.display = 'block';
     }
   </script>
