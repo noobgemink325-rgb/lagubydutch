@@ -3,67 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pemutar Musik & Lirik</title>
+  <title>Pemutar Musik Full & Lirik</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
     body { background-color: #0f172a; color: #f8fafc; padding: 20px; max-width: 500px; margin: 0 auto; }
     .card { background: #1e293b; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin-bottom: 20px; }
     h2 { text-align: center; color: #38bdf8; margin-bottom: 15px; font-size: 1.4rem; }
     label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: #94a3b8; }
     select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 1rem; margin-bottom: 15px; outline: none; }
-    .player-box { margin-top: 15px; text-align: center; }
-    iframe { width: 100%; height: 166px; border-radius: 10px; border: none; }
+    .player-box { margin-top: 10px; text-align: center; border-radius: 10px; overflow: hidden; }
+    iframe { width: 100%; height: 210px; border: none; }
     .lyrics-box { background: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #334155; max-height: 220px; overflow-y: auto; text-align: center; font-size: 0.95rem; line-height: 1.6; color: #cbd5e1; white-space: pre-line; margin-top: 15px; }
   </style>
 </head>
 <body>
 
   <div class="card">
-    <h2>🎵 Pemutar Musik & Lirik</h2>
+    <h2>🎵 Pemutar Musik Full & Lirik</h2>
     
-    <label for="songSelect">Pilih Lagu Populer:</label>
+    <label for="songSelect">Pilih Lagu Populer (Full Track):</label>
     <select id="songSelect" onchange="changeSong()">
-      <option value="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1360662655&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false|takkan_terganti">Marcell - Takkan Terganti</option>
-      <option value="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1460592931&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false|komang">Raim Laode - Komang</option>
-      <option value="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1512398518&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false|jiwa_yang_bersedih">Ghea Indrawari - Jiwa Yang Bersedih</option>
+      <option value="9fCthqI1_f8|takkan_terganti">Marcell - Takkan Terganti</option>
+      <option value="1_S_2_4aU_A|komang">Raim Laode - Komang</option>
+      <option value="fI3iCIno47g|jiwa_yang_bersedih">Ghea Indrawari - Jiwa Yang Bersedih</option>
     </select>
 
     <div class="player-box">
-      <iframe id="mainPlayer" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1360662655&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>
+      <!-- Embedded YouTube Resmi dengan ID Lagu Spesifik agar Full Musik -->
+      <iframe id="mainPlayer" src="https://www.youtube.com/embed/9fCthqI1_f8" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 
     <div class="lyrics-box" id="lyricsContent">
-      Lagu "Takkan Terganti" menceritakan tentang perasaan cinta mendalam dan kesetiaan seseorang terhadap kekasihnya yang takkan pernah bisa digantikan oleh siapa pun.
+      Lagu "Takkan Terganti" menceritakan tentang kenangan manis dan rasa cinta yang mendalam kepada seseorang yang takkan pernah tergantikan oleh siapa pun.
 
-      Kutipan Lirik:
+      Kutipan Lirik (Marcell):
       "Telah ku abadikan nama mu di dalam hati ini
       Takkan pernah terganti..."
 
-      (Pilih lagu dari daftar untuk memperbarui pemutar & penjelasan lirik)
+      (Silakan cari lirik lengkap lagu ini di Google Search)
     </div>
   </div>
 
   <script>
     const songData = {
       "takkan_terganti": {
-        desc: "Lagu \"Takkan Terganti\" menceritakan tentang perasaan cinta mendalam dan kesetiaan seseorang terhadap kekasihnya yang takkan pernah bisa digantikan oleh siapa pun.\n\nKutipan Lirik:\n\"Telah ku abadikan nama mu di dalam hati ini\nTakkan pernah terganti...\""
+        desc: "Lagu \"Takkan Terganti\" menceritakan tentang perasaan cinta mendalam dan kesetiaan seseorang terhadap kekasihnya yang takkan pernah bisa digantikan oleh siapa pun.\n\nKutipan Lirik (Marcell):\n\"Telah ku abadikan nama mu di dalam hati ini\nTakkan pernah terganti...\"\n\n(Kamu bisa menemukan lirik lengkapnya dengan mencarinya di Google Search)"
       },
       "komang": {
-        desc: "Lagu \"Komang\" bercerita tentang rasa kagum dan cinta yang begitu besar kepada seseorang yang sangat berharga dan mengagumkan dalam hidup.\n\nKutipan Lirik:\n\"Sebab kau terlalu indah dari sekedar kata\nDunia berhenti sejenak menikmati indahmu...\""
+        desc: "Lagu \"Komang\" bercerita tentang rasa kagum dan cinta yang begitu besar kepada seseorang yang sangat berharga dalam hidup.\n\nKutipan Lirik (Raim Laode):\n\"Sebab kau terlalu indah dari sekedar kata\nDunia berhenti sejenak menikmati indahmu...\"\n\n(Kamu bisa menemukan lirik lengkapnya dengan mencarinya di Google Search)"
       },
       "jiwa_yang_bersedih": {
-        desc: "Lagu \"Jiwa Yang Bersedih\" berisi pesan penyemangat bagi siapapun yang sedang lelah, terluka, atau menghadapi masa-masa sulit dalam hidup agar tetap bertahan.\n\nKutipan Lirik:\n\"Sampaikan pada jiwa yang bersedih\nBisakah kau bertahan sebentar lagi...\""
+        desc: "Lagu \"Jiwa Yang Bersedih\" berisi pesan penyemangat bagi siapapun yang sedang lelah atau mengalami masa sulit agar tetap bertahan.\n\nKutipan Lirik (Ghea Indrawari):\n\"Sampaikan pada jiwa yang bersedih\nBisakah kau bertahan sebentar lagi...\"\n\n(Kamu bisa menemukan lirik lengkapnya dengan mencarinya di Google Search)"
       }
     };
 
     function changeSong() {
       const selectedValue = document.getElementById('songSelect').value;
-      const [embedUrl, lyricKey] = selectedValue.split('|');
+      const [videoId, lyricKey] = selectedValue.split('|');
       
-      // Update Pemutar SoundCloud
-      document.getElementById('mainPlayer').src = embedUrl;
+      // Update Pemutar Video YouTube Full
+      document.getElementById('mainPlayer').src = `https://www.youtube.com/embed/${videoId}`;
       
-      // Update Penjelasan & Kutipan Lirik
+      // Update Penjelasan & Ringkasan Lirik
       document.getElementById('lyricsContent').innerText = songData[lyricKey].desc || "Informasi tidak tersedia.";
     }
   </script>
