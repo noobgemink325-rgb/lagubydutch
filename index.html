@@ -5,72 +5,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pemutar Musik & Lirik</title>
   <style>
-    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: #0f172a; color: #f8fafc; max-width: 600px; margin: 30px auto; padding: 20px; }
-    h2 { text-align: center; color: #38bdf8; margin-bottom: 20px; }
-    .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
-    input { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #1e293b; color: #fff; font-size: 1rem; }
-    button { padding: 12px 20px; background-color: #38bdf8; color: #0f172a; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    button:hover { background-color: #0284c7; color: white; }
-    .player-container { margin-bottom: 20px; border-radius: 12px; overflow: hidden; background: #1e293b; text-align: center; display: none; padding: 10px; }
-    iframe { width: 100%; height: 250px; border: none; border-radius: 8px; }
-    .lyrics-box { background: #1e293b; padding: 20px; border-radius: 12px; line-height: 1.6; text-align: center; display: none; margin-top: 15px; }
-    .btn-action { display: inline-block; margin: 8px 5px; padding: 10px 15px; color: white; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 0.9rem; }
-    .btn-youtube { background: #ef4444; }
-    .btn-lyrics { background: #10b981; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #0f172a; color: #f8fafc; padding: 20px; max-width: 500px; margin: 0 auto; }
+    .card { background: #1e293b; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin-bottom: 20px; }
+    h2 { text-align: center; color: #38bdf8; margin-bottom: 15px; font-size: 1.4rem; }
+    label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: #94a3b8; }
+    select, input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 1rem; margin-bottom: 15px; outline: none; }
+    button { width: 100%; padding: 12px; background: #38bdf8; color: #0f172a; border: none; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; }
+    button:hover { background: #0284c7; color: #fff; }
+    .player-box { margin-top: 15px; text-align: center; }
+    iframe { width: 100%; height: 210px; border-radius: 10px; border: none; }
+    .lyrics-box { background: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #334155; max-height: 200px; overflow-y: auto; text-align: center; font-size: 0.95rem; line-height: 1.6; color: #cbd5e1; white-space: pre-line; margin-top: 15px; }
   </style>
 </head>
 <body>
 
-  <h2>🎵 Pemutar Musik & Lirik</h2>
-  
-  <div class="search-box">
-    <input type="text" id="songInput" placeholder="Masukkan judul lagu & penyanyi...">
-    <button onclick="playSong()">Cari & Putar</button>
-  </div>
+  <div class="card">
+    <h2>🎵 Pemutar Musik & Lirik</h2>
+    
+    <label for="songSelect">Pilih Lagu Populer:</label>
+    <select id="songSelect" onchange="changeSong()">
+      <option value="9fCthqI1_f8|takkan_terganti">Marcell - Takkan Terganti</option>
+      <option value="93144S43224|karena_su_sayang">Near feat. Dian Sorowea - Karna Su Sayang</option>
+      <option value="1_S_2_4aU_A|komang">Raim Laode - Komang</option>
+      <option value="fI3iCIno47g|jiwa_yang_bersedih">Ghea Indrawari - Jiwa Yang Bersedih</option>
+    </select>
 
-  <div class="player-container" id="playerContainer">
-    <iframe id="youtubePlayer" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-  </div>
+    <div class="player-box">
+      <iframe id="mainPlayer" src="https://www.youtube.com/embed/9fCthqI1_f8" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
 
-  <div class="lyrics-box" id="lyricsBox">
-    <h3 id="songTitle" style="color: #38bdf8; margin-top:0;"></h3>
-    <p id="lyricsNotice">Putar musik melalui tombol atau pemutar di atas, lalu cek lirik di bawah ini:</p>
-    <div>
-      <a id="ytDirectBtn" class="btn-action btn-youtube" target="_blank">▶ Putar Langsung di YouTube</a>
-      <a id="googleSearchBtn" class="btn-action btn-lyrics" target="_blank">📄 Buka Lirik di Google</a>
+    <div class="lyrics-box" id="lyricsContent">
+      Telah ku abadikan nama mu di dalam hati ini...
+      Takkan pernah terganti...
+      
+      (Pilih lagu dari daftar di atas untuk memutar & menampilkan lirik)
     </div>
   </div>
 
   <script>
-    function playSong() {
-      const input = document.getElementById('songInput').value.trim();
-      if (!input) {
-        alert("Masukkan judul lagu terlebih dahulu!");
-        return;
-      }
+    const lyricsData = {
+      "takkan_terganti": `Telah ku abadikan nama mu di dalam hati ini
+Takkan pernah terganti...
 
-      const encodedQuery = encodeURIComponent(input);
+Meski waktu datang dan bertukar
+Takkan pernah menggantikan mu
+Kau yang terindah, yang pernah tercipta
+Dalam hidupku...`,
+      "karna_su_sayang": `Biasa sa cinta satu sa tambah satu
+Sa tra bisa bagini sa tra bisa bagitu
+Cinta ini hanya untuk ko...`,
+      "komang": `Sebab kau terlalu indah dari sekedar kata
+Dunia berhenti sejenak menikmati indahmu...`,
+      "jiwa_yang_bersedih": `Sampaikan pada jiwa yang bersedih
+Bisakah kau bertahan sebentar lagi...`
+    };
 
-      // Menggunakan YouTube No-Cookie / Embed Kueri yang Kompatibel
-      const playerContainer = document.getElementById('playerContainer');
-      const player = document.getElementById('youtubePlayer');
-      player.src = `https://www.youtube-nocookie.com/embed?listType=search&list=${encodedQuery}`;
-      playerContainer.style.display = 'block';
-
-      // Update Tampilan Lirik dan Link Direct
-      const lyricsBox = document.getElementById('lyricsBox');
-      const songTitle = document.getElementById('songTitle');
-      const googleSearchBtn = document.getElementById('googleSearchBtn');
-      const ytDirectBtn = document.getElementById('ytDirectBtn');
-
-      songTitle.innerText = `Lagu: "${input}"`;
+    function changeSong() {
+      const selectedValue = document.getElementById('songSelect').value;
+      const [videoId, lyricKey] = selectedValue.split('|');
       
-      // Tombol Alternatif jika Embed Diblokir oleh YouTube
-      ytDirectBtn.href = `https://www.youtube.com/results?search_query=${encodedQuery}`;
-      googleSearchBtn.href = `https://www.google.com/search?q=${encodeURIComponent(input + " lirik")}`;
+      // Update Pemutar YouTube dengan Video ID spesifik yang pasti bisa diputar
+      document.getElementById('mainPlayer').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
       
-      lyricsBox.style.display = 'block';
+      // Update Lirik
+      document.getElementById('lyricsContent').innerText = lyricsData[lyricKey] || "Lirik tidak tersedia.";
     }
   </script>
 
