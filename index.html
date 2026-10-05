@@ -3,19 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pemutar Musik & Lirik</title>
+  <title>Pemutar Musik & Lirik Direct</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: #0f172a; color: #f8fafc; padding: 20px; max-width: 500px; margin: 0 auto; }
-    .card { background: #1e293b; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); margin-bottom: 20px; }
-    h2 { text-align: center; color: #38bdf8; margin-bottom: 15px; font-size: 1.4rem; }
-    label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: #94a3b8; }
-    select, input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 1rem; margin-bottom: 15px; outline: none; }
-    button { width: 100%; padding: 12px; background: #38bdf8; color: #0f172a; border: none; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+    body { background-color: #0f172a; color: #f8fafc; padding: 20px; max-width: 550px; margin: 0 auto; }
+    .card { background: #1e293b; padding: 24px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+    h2 { text-align: center; color: #38bdf8; margin-bottom: 20px; font-size: 1.5rem; }
+    .search-box { display: flex; gap: 10px; margin-bottom: 20px; }
+    input { flex: 1; padding: 12px 16px; border-radius: 10px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 1rem; outline: none; }
+    input:focus { border-color: #38bdf8; }
+    button { padding: 12px 20px; background: #38bdf8; color: #0f172a; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.2s; }
     button:hover { background: #0284c7; color: #fff; }
-    .player-box { margin-top: 15px; text-align: center; }
-    iframe { width: 100%; height: 210px; border-radius: 10px; border: none; }
-    .lyrics-box { background: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #334155; max-height: 200px; overflow-y: auto; text-align: center; font-size: 0.95rem; line-height: 1.6; color: #cbd5e1; white-space: pre-line; margin-top: 15px; }
+    
+    .player-section { margin-top: 20px; display: none; text-align: center; background: #0f172a; padding: 20px; border-radius: 12px; border: 1px solid #334155; }
+    .song-title { font-size: 1.2rem; font-weight: bold; color: #38bdf8; margin-bottom: 5px; }
+    .artist-name { font-size: 0.95rem; color: #94a3b8; margin-bottom: 15px; }
+    .album-cover { width: 140px; height: 140px; border-radius: 12px; object-fit: cover; margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+    audio { width: 100%; margin-top: 10px; outline: none; }
+    
+    .lyrics-container { margin-top: 20px; text-align: left; background: #1e293b; padding: 15px; border-radius: 10px; border-top: 2px solid #38bdf8; }
+    .lyrics-title { font-weight: bold; color: #38bdf8; margin-bottom: 10px; font-size: 1rem; text-align: center; }
+    .lyrics-text { font-size: 0.95rem; line-height: 1.7; color: #cbd5e1; white-space: pre-line; text-align: center; max-height: 250px; overflow-y: auto; padding-right: 5px; }
   </style>
 </head>
 <body>
@@ -23,53 +31,86 @@
   <div class="card">
     <h2>🎵 Pemutar Musik & Lirik</h2>
     
-    <label for="songSelect">Pilih Lagu Populer:</label>
-    <select id="songSelect" onchange="changeSong()">
-      <option value="9fCthqI1_f8|takkan_terganti">Marcell - Takkan Terganti</option>
-      <option value="93144S43224|karena_su_sayang">Near feat. Dian Sorowea - Karna Su Sayang</option>
-      <option value="1_S_2_4aU_A|komang">Raim Laode - Komang</option>
-      <option value="fI3iCIno47g|jiwa_yang_bersedih">Ghea Indrawari - Jiwa Yang Bersedih</option>
-    </select>
-
-    <div class="player-box">
-      <iframe id="mainPlayer" src="https://www.youtube.com/embed/9fCthqI1_f8" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Ketik judul lagu & penyanyi..." onkeypress="if(event.key==='Enter') searchMusic()">
+      <button onclick="searchMusic()">Cari</button>
     </div>
 
-    <div class="lyrics-box" id="lyricsContent">
-      Telah ku abadikan nama mu di dalam hati ini...
-      Takkan pernah terganti...
+    <div class="player-section" id="playerSection">
+      <img id="albumArt" class="album-cover" src="" alt="Album Cover">
+      <div id="trackName" class="song-title">Judul Lagu</div>
+      <div id="artistName" class="artist-name">Nama Penyanyi</div>
       
-      (Pilih lagu dari daftar di atas untuk memutar & menampilkan lirik)
+      <!-- Pemutar Suara Langsung HTML5 -->
+      <audio id="audioPlayer" controls autoplay></audio>
+
+      <div class="lyrics-container">
+        <div class="lyrics-title">📖 Lirik Lagu</div>
+        <div id="lyricsText" class="lyrics-text">Memuat lirik...</div>
+      </div>
     </div>
   </div>
 
   <script>
-    const lyricsData = {
-      "takkan_terganti": `Telah ku abadikan nama mu di dalam hati ini
-Takkan pernah terganti...
+    async function searchMusic() {
+      const query = document.getElementById('searchInput').value.trim();
+      if (!query) return alert("Masukkan judul lagu terlebih dahulu!");
 
-Meski waktu datang dan bertukar
-Takkan pernah menggantikan mu
-Kau yang terindah, yang pernah tercipta
-Dalam hidupku...`,
-      "karna_su_sayang": `Biasa sa cinta satu sa tambah satu
-Sa tra bisa bagini sa tra bisa bagitu
-Cinta ini hanya untuk ko...`,
-      "komang": `Sebab kau terlalu indah dari sekedar kata
-Dunia berhenti sejenak menikmati indahmu...`,
-      "jiwa_yang_bersedih": `Sampaikan pada jiwa yang bersedih
-Bisakah kau bertahan sebentar lagi...`
-    };
+      const playerSection = document.getElementById('playerSection');
+      const lyricsText = document.getElementById('lyricsText');
+      
+      lyricsText.innerText = "Mencari musik & lirik...";
+      playerSection.style.display = 'block';
 
-    function changeSong() {
-      const selectedValue = document.getElementById('songSelect').value;
-      const [videoId, lyricKey] = selectedValue.split('|');
-      
-      // Update Pemutar YouTube dengan Video ID spesifik yang pasti bisa diputar
-      document.getElementById('mainPlayer').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-      
-      // Update Lirik
-      document.getElementById('lyricsContent').innerText = lyricsData[lyricKey] || "Lirik tidak tersedia.";
+      try {
+        // 1. Cari Audio Preview & Metadata via iTunes API
+        const response = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&limit=1&entity=song`);
+        const data = await response.json();
+
+        if (data.results.length === 0) {
+          alert("Lagu tidak ditemukan. Coba judul lain!");
+          return;
+        }
+
+        const track = data.results[0];
+        
+        document.getElementById('trackName').innerText = track.trackName;
+        document.getElementById('artistName').innerText = track.artistName;
+        document.getElementById('albumArt').src = track.artworkUrl100.replace('100x100bb', '300x300bb');
+        
+        // Putar Suara Langsung
+        const audioPlayer = document.getElementById('audioPlayer');
+        audioPlayer.src = track.previewUrl;
+        audioPlayer.play();
+
+        // 2. Cari Lirik Langsung via LrcLib API
+        fetchLyrics(track.artistName, track.trackName);
+
+      } catch (err) {
+        console.error(err);
+        lyricsText.innerText = "Gagal memuat musik/lirik. Pastikan koneksi internet stabil.";
+      }
+    }
+
+    async function fetchLyrics(artist, title) {
+      const lyricsText = document.getElementById('lyricsText');
+      try {
+        const res = await fetch(`https://lrclib.net/api/get?artist_name=${encodeURIComponent(artist)}&track_name=${encodeURIComponent(title)}`);
+        if (!res.ok) throw new Error("Lirik tidak ditemukan");
+        
+        const data = await res.json();
+        const lyrics = data.syncedLyrics || data.plainLyrics;
+        
+        if (lyrics) {
+          // Bersihkan timestamp jika ada format LRC [00:12.34]
+          const cleanLyrics = lyrics.replace(/\[\d+:\d+\.\d+\]/g, '');
+          lyricsText.innerText = cleanLyrics;
+        } else {
+          lyricsText.innerText = "Lirik untuk lagu ini tidak tersedia di database.";
+        }
+      } catch (e) {
+        lyricsText.innerText = "Lirik tidak ditemukan secara otomatis.\nKamu bisa mencari lirik lengkapnya di Google Search.";
+      }
     }
   </script>
 
